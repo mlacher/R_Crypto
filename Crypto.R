@@ -2,22 +2,29 @@
 
 install.packages("Quandl")
 install.packages("dygraphs")
+install.packages("TTR")
 
-library(xts)  
+library("xts")  
 library("Quandl")
+library("TTR")
 library("dygraphs")
 # Quandl.api_key('***************')
+
+
 BTC <- Quandl("BITFINEX/BTCUSD",type="xts")
 ETH <- Quandl("BINANCE/ETHUSD")
 IOTA <- Quandl("BITFINEX/IOTUSD")
 XRP <- Quandl("BITFINEX/XRPUSD")
 #XVG <- Quandl("BITFINEX/XVGUSD")
+macd  <- MACD(BTC[,2], 12, 26, 9, maType="EMA" )
 
-test <- as.matrix(ETH[2])
-BTC.ma7 <- filter(BTC[,3], 1/13,sides = 1, method = "recursive") # smoothing 1 week
-BTC.ma11 <- filter(BTC[,3], 2/27,sides = 1, method = "recursive" ) # smoothing half month
-BTC<-cbind.xts(BTC.ma7,BTC) # name missing 
-BTC<-cbind.xts(BTC.ma11,BTC) # name missing
+EMA.BTC12 <- EMA(BTC[,3], 12)
+EMA.BTC26 <- EMA(BTC[,3], 20)
+EMA.BTC <- cbind(EMA.BTC12,EMA.BTC26)
+colnames(EMA.BTC)<- c("EMA12","EMA26")
+BTC<-cbind.xts(EMA.BTC,BTC) # name missing 
+
+
 # Plot
 dygraph(BTC[,1:3]) %>% 
   dyRangeSelector()
