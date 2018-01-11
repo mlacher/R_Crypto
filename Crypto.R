@@ -4,6 +4,7 @@ install.packages("Quandl")
 install.packages("dygraphs")
 install.packages("TTR")
 
+
 library("xts")  
 library("Quandl")
 library("TTR")
@@ -26,7 +27,8 @@ BTC<-cbind.xts(EMA.BTC,BTC) # name missing
 
 
 # Plot
-dygraph(BTC[,1:3]) %>% 
+
+dygraph(BTC[,c(1,2,5)]) %>% 
   dyRangeSelector()
 
 
