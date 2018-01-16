@@ -31,4 +31,9 @@ BTC<-cbind.xts(EMA.BTC,BTC) # name missing
 dygraph(BTC[,c(1,2,5)]) %>% 
   dyRangeSelector()
 
-
+BTC <- BTC["2017/2017-12"]
+macd <- macd["2017/2017-12"] 
+windows()
+par(mfrow=c(2,1))
+plot(macd)
+plot(BTC[,5])
