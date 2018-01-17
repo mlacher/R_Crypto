@@ -36,4 +36,4 @@ macd <- macd["2017/2017-12"]
 windows()
 par(mfrow=c(2,1))
 plot(macd)
-plot(BTC[,5])
+plot(BTC[,c(1,2,5)])
