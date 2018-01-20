@@ -1,5 +1,7 @@
-# This program reads the crypto data from Bitfinex
 
+
+#-----------------------Required Packages----------------------------#
+install.packages("xts")
 install.packages("Quandl")
 install.packages("dygraphs")
 install.packages("TTR")
@@ -9,26 +11,30 @@ library("Quandl")
 library("TTR")
 library("dygraphs")
 
-Crypt_DB<- function(Crypt_Name){
+#------------------------------Functions-----------------------------#
+
+#1.1 Read Database
+
+Read_Crypt_DB<- function(Crypt_Name){
 Crypt_Add = paste("BITFINEX/",Crypt_Name,"USD", sep ="")
-BTC <- Quandl(FullName,type="xts")
+BTC <- Quandl(Crypt_Add,type="xts")
 return (BTC)
 }
 
 
-
-
-Crypto_DB("BTC")
-#XVG <- Quandl("BITFINEX/XVGUSD")
-macd  <- MACD(BTC[,2], 12, 26, 9, maType="EMA" )
-
-EMA.BTC12 <- EMA(BTC[,3], 12)
-EMA.BTC26 <- EMA(BTC[,3], 20)
-EMA.BTC <- cbind(EMA.BTC12,EMA.BTC26)
+#1.2 Calulate Stuff
+Calc_Crypt <- function (Crypt_DB){
+macd  <- MACD(Crypt_DB[,2], 12, 26, 9, maType="EMA" )
+EMA12 <- EMA(BTC[,3], 12)
+EMA26 <- EMA(BTC[,3], 20)
+EMA <- cbind(EMA12,EMA26)
 colnames(EMA.BTC)<- c("EMA12","EMA26")
-BTC<-cbind.xts(EMA.BTC,BTC) # name missing 
+Crypt_DB<-cbind.xts(EMA,Crypt_DB) 
+}
+#------------------------------Main----------------------------------#
 
-
+BTC <- Read_Crypt_DB("BTC")
+Calc_Crypt(BTC)
 # Plot
 
 dygraph(BTC[,c(1,2,5)]) %>% 
