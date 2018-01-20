@@ -4,18 +4,21 @@ install.packages("Quandl")
 install.packages("dygraphs")
 install.packages("TTR")
 
-
 library("xts")  
 library("Quandl")
 library("TTR")
 library("dygraphs")
-# Quandl.api_key('***************')
+
+Crypt_DB<- function(Crypt_Name){
+Crypt_Add = paste("BITFINEX/",Crypt_Name,"USD", sep ="")
+BTC <- Quandl(FullName,type="xts")
+return (BTC)
+}
 
 
-BTC <- Quandl("BITFINEX/BTCUSD",type="xts")
-ETH <- Quandl("BINANCE/ETHUSD")
-IOTA <- Quandl("BITFINEX/IOTUSD")
-XRP <- Quandl("BITFINEX/XRPUSD")
+
+
+Crypto_DB("BTC")
 #XVG <- Quandl("BITFINEX/XVGUSD")
 macd  <- MACD(BTC[,2], 12, 26, 9, maType="EMA" )
 
