@@ -48,7 +48,7 @@ macd <- macd["2017-6/2018-6"]
 
 
 #------------------------------Main----------------------------------#
-
+library("StockCalc")
 BTC  <- Read_Crypt_DB("BTC")
 cBTC <- Calc_Crypt(BTC)
 Plot_Crypt(cBTC,"2017-6","2018-1")
