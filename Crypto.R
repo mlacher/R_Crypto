@@ -29,6 +29,8 @@ EMA26 <- EMA(Crypt_DB[,3], 20)
 EMA <- cbind(EMA12,EMA26)
 colnames(EMA)<- c("EMA12","EMA26")
 cCrypt_DB<-cbind.xts(EMA,Crypt_DB) 
+BB20<- BBands(Crypt_DB[,3], sd=2.0)
+cCrypt_DB<-cbind.xts(BB20,cCrypt_DB) 
 return (cCrypt_DB)
 }
 
@@ -54,6 +56,6 @@ cBTC <- Calc_Crypt(BTC)
 Plot_Crypt(cBTC,"2017-6","2018-1")
 # Plot
 
-dygraph(cBTC[,c(1,2,5)]) %>% 
+dygraph(cBTC[,c(1,3,9)]) %>% 
   dyRangeSelector()
 

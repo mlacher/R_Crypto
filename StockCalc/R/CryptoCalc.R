@@ -35,6 +35,8 @@ Calc_Crypt <- function (Crypt_DB){
   EMA <- cbind(EMA12,EMA26)
   colnames(EMA)<- c("EMA12","EMA26")
   cCrypt_DB<-cbind.xts(EMA,Crypt_DB)
+  BB20<- BBands(Crypt_DB[,3], sd=2.0)
+  cCrypt_DB<-cbind.xts(BB20,cCrypt_DB) 
   return (cCrypt_DB)
 }
 
