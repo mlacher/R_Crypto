@@ -23,14 +23,33 @@ return (Crypt_DB)
 
 #1.2 Calulate Stuff
 Calc_Crypt <- function (Crypt_DB){
+
+#1.2.1 MACD / EMA
+# MACD 
+# Long Buy Signal : EMA12>EMA26 cross from below
+# Sell Signal     : EMA12<EMA26 cross from top
 macd  <- MACD(Crypt_DB[,2], 12, 26, 9, maType="EMA" )
 EMA12 <- EMA(Crypt_DB[,3], 12)
 EMA26 <- EMA(Crypt_DB[,3], 20)
 EMA <- cbind(EMA12,EMA26)
 colnames(EMA)<- c("EMA12","EMA26")
 cCrypt_DB<-cbind.xts(EMA,Crypt_DB) 
+
+#1.2.2 Boilinger Band
+# Buy Signal    : Upper Boilinger Band uptrend
+# Sell Signal   : Lower Boilinger Band downtrend
 BB20<- BBands(Crypt_DB[,3], sd=2.0)
 cCrypt_DB<-cbind.xts(BB20,cCrypt_DB) 
+
+#1.2.3 RSI
+# Undervalued   : RSI< 30
+# Overvalued    : RSI> 70
+Rsi<-RSI(Crypt_DB[,3])
+cCrypt_DB<-cbind.xts(Rsi,cCrypt_DB)
+
+#1.2.X Return XTS Object
+# Return Object with following Structure:
+# EMA|BBdown|BBAVG|BBup|pctB|EMA12|EMA26|HIGH|LOW|MID|LAST|BID|ASK|Vol
 return (cCrypt_DB)
 }
 
@@ -38,12 +57,12 @@ return (cCrypt_DB)
 Plot_Crypt <- function (cCrypt_DB, begDate, endDate){
 Date_Add = paste(begDate,"/",endDate, sep = "")
 plot_cCrypt_DB <- cCrypt_DB[Date_Add]
-windows()
-savePlot(pdf,'myplot.pdf')
-par(mfrow=c(2,1))
-plot(plot_cCrypt_DB[,3])
-plot(plot_cCrypt_DB[,c(1,2)])
-dev.off()
+
+
+# par(mfrow=c(2,1))
+# a<-plot(plot_cCrypt_DB[,3])
+# b<-plot(plot_cCrypt_DB[,c(1,2)])
+return(plot_cCrypt_DB)
 }
 
 macd <- macd["2017-6/2018-6"] 
@@ -51,11 +70,17 @@ macd <- macd["2017-6/2018-6"]
 
 #------------------------------Main----------------------------------#
 library("StockCalc")
-BTC  <- Read_Crypt_DB("BTC")
-cBTC <- Calc_Crypt(BTC)
-Plot_Crypt(cBTC,"2017-6","2018-1")
-# Plot
+ETH  <- Read_Crypt_DB("ETH")
+cETH <- Calc_Crypt(ETH)
 
-dygraph(cBTC[,c(1,3,9)]) %>% 
+pcETH <- Plot_Crypt(cETH,"2017-6","2018-1")
+# Plot
+par(mfrow=c(2,1))
+plot(pcETH[,c(2,4,6,7,10)])
+plot(pcETH[,c(1)])
+
+
+
+dygraph(cETH[,c(1,3,9)]) %>% 
   dyRangeSelector()
 
