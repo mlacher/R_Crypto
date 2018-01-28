@@ -36,8 +36,10 @@ colnames(EMA)<- c("EMA12","EMA26")
 cCrypt_DB<-cbind.xts(EMA,Crypt_DB) 
 
 #1.2.2 Boilinger Band
-# Buy Signal    : Upper Boilinger Band uptrend
-# Sell Signal   : Lower Boilinger Band downtrend
+# Trend up    : Chart crosses Upper band
+# Trend low   : Chart crosses Lower band
+# Trend Change short: Chart close to one band -> leads to other direction 
+# Trend Change(up or down) : bandwidth small
 BB20<- BBands(Crypt_DB[,3], sd=2.0)
 cCrypt_DB<-cbind.xts(BB20,cCrypt_DB) 
 
@@ -53,7 +55,11 @@ cCrypt_DB<-cbind.xts(Rsi,cCrypt_DB)
 return (cCrypt_DB)
 }
 
-#1.3 Plot Range and Save
+#1.3 BuySignal
+# Algorithm to calculate WinSuccess 
+# Include BB(Bandwith small)+ RSI(70-30)+MACD(positiv)+BB(more uptrend)
+
+#1.4 Plot Range and Save
 Plot_Crypt <- function (cCrypt_DB, begDate, endDate){
 Date_Add = paste(begDate,"/",endDate, sep = "")
 plot_cCrypt_DB <- cCrypt_DB[Date_Add]
