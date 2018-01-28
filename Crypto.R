@@ -79,14 +79,16 @@ library("StockCalc")
 ETH  <- Read_Crypt_DB("ETH")
 cETH <- Calc_Crypt(ETH)
 
-pcETH <- Plot_Crypt(cETH,"2017-6","2018-1")
+pcETH <- Plot_Crypt(cETH,"2017-6","2018-2")
 # Plot
-par(mfrow=c(2,1))
+par(mfrow=c(3,1))
 plot(pcETH[,c(2,4,6,7,10)])
 plot(pcETH[,c(1)])
-abline(h=70)
+plot(nETC)
 
-
+#BBand based on the mean_norm value
+nETC<- cbind.xts(pcETH[,3]/pcETH[,3],pcETH[,2]/pcETH[,3],pcETH[,4]/pcETH[,3])
+plot(nETC)
 
 dygraph(cETH[,c(1,3,9)]) %>% 
   dyRangeSelector()
