@@ -17,10 +17,10 @@ library("dygraphs")
 library("StockCalc")
 Quandl.api_key("aFFTC-nfXbcUNY5xbuVt")
 #user mxlchr, PW krass123
-hallo <- c("AAPL","AES","ADI")
+hallo <- c("AAPL","AES","ADI","CCE")
 buy <- c(0,0,0)
 sell <- c(0,0,0)
-for (b in 1:1){
+for (b in 1:4){
  
   
 ETH  <- Read_Share_DB("WIKI/",hallo[b])
@@ -74,7 +74,7 @@ for(i in 1:(array_size-1)){
 }
 
 # Plot
-par(mfrow=c(5,1))
+par(mfrow=c(3,1))
 plot(pcETH[,c(2,4,6,7,10)])
 plot(nETC[,c(1:3)])
 plot(nETC[,c(6)])
