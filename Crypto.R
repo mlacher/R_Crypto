@@ -18,14 +18,25 @@ library("StockCalc")
 Quandl.api_key("aFFTC-nfXbcUNY5xbuVt")
 #user mxlchr, PW krass123
 Starttime <- Sys.time()
-hallo <- c("AAPL","AES","ADI","CCE")
+sh_names <- c("AAPL","AES","ADI","CCE","DOW","EW",
+              "F",
+              "FISV",
+              "FDX",
+              "FLS",
+              "FMC",
+              "FFIV",
+              "FOXA",
+              "FIS",
+              "FITB",
+              "FTI"
+)
 buy <- c(0)
 sell <- c(0)
-array_size <- length(hallo)
+array_size <- length(sh_names)
 for (b in 1:array_size){
  
   
-ETH  <- Read_Share_DB("WIKI/",hallo[b],"2017-06-30","2018-01-31")
+ETH  <- Read_Share_DB("WIKI/",sh_names[b],"2017-06-30","2018-01-31")
 cETH <- Calc_Share(ETH)
 cETH<-na.omit(cETH)
 
@@ -79,7 +90,7 @@ Stoptime <- Sys.time()
 print(Stoptime-Starttime)
 # Plot
 plot(sell/buy)
-par(mfrow=c(4,1))
+par(mfrow=c(2,1))
 plot(cETH[,c(2,4,6,7,10)])
 plot(nETC[,c(1:3)])
 plot(nETC[,c(6)])
