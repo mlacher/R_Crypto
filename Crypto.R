@@ -21,21 +21,28 @@ Starttime <- Sys.time()
 sh_names <- c("AAPL","AES","ADI","CCE","DOW","EW",
               "F",
               "FISV",
+              "HD",
               "FDX",
+              "ICE",
               "FLS",
+              "IR",
+              "IP",
               "FMC",
               "FFIV",
               "FOXA",
               "FIS",
               "FITB",
+              "MMM",
+              "NI",
               "FTI"
 )
 buy <- c(0)
 sell <- c(0)
 array_size <- length(sh_names)
+
 for (b in 1:array_size){
  
-  
+ 
 ETH  <- Read_Share_DB("WIKI/",sh_names[b],"2017-06-30","2018-01-31")
 cETH <- Calc_Share(ETH)
 cETH<-na.omit(cETH)
@@ -68,8 +75,11 @@ for(i in 1:(array_size-1)){
   else{
     nETC[(i+1),5] <- 0;
   } 
-  if (cETH[(i+1),10]>cETH[(i+1),4]){ #Value hits UpperBB
+  if (cETH[(i+1),10]>cETH[(i+1),4]){ #Value hits UpperBB (buy signal)
     nETC[(i+1),7]<- 1;
+  }
+  else if (cETH[(i+1),10]<cETH[(i+1),2]){ #Value hits LowerBB (sell signal)
+    nETC[(i+1),7]<- -1;
   }
   else {
     nETC[(i+1),7]<- 0;
@@ -77,11 +87,14 @@ for(i in 1:(array_size-1)){
   
   if ((nETC[(i+1),7]==1) && (nETC[(i+1),6]==1)&& (goto ==0)){ # first test buy in
     buy[b] <- cETH[(i+1),10];
-    i = (array_size-1);# does not work?
     goto = 1;
     sell[b] <- cETH[(array_size),10];
   }
-
+  else if ((nETC[(i+1),7]==-1) && (nETC[(i+1),6]==1)&& (goto ==1)){ # first test sell
+    goto = 0;
+    sell[b] <- cETH[(i+1),10];
+  }
+  #else {sell[b] <-cETH[(array_size),10];}
 }
 
 
@@ -90,10 +103,10 @@ Stoptime <- Sys.time()
 print(Stoptime-Starttime)
 # Plot
 plot(sell/buy)
-par(mfrow=c(2,1))
+par(mfrow=c(3,1))
 plot(cETH[,c(2,4,6,7,10)])
-plot(nETC[,c(1:3)])
 plot(nETC[,c(6)])
+plot(nETC[,c(7)])
 plot(nETC[,c(7)])
 plot(cETH[,c(1)])
 #BBand based on the mean_norm value
