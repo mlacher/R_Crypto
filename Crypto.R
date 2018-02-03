@@ -88,10 +88,10 @@ for(i in 1:(array_size-1)){
   if ((nETC[(i+1),7]==1) && (nETC[(i+1),6]==1)&& (goto ==0)){ # first test buy in
     buy[b] <- cETH[(i+1),10];
     goto = 1;
-    sell[b] <- cETH[(array_size),10];
+    #sell[b] <- cETH[(array_size),10];
   }
   else if ((nETC[(i+1),7]==-1) && (nETC[(i+1),6]==1)&& (goto ==1)){ # first test sell
-    goto = 0;
+    goto = 1;
     sell[b] <- cETH[(i+1),10];
   }
   #else {sell[b] <-cETH[(array_size),10];}
