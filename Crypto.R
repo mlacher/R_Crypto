@@ -12,14 +12,14 @@ library("Quandl")
 library("TTR")
 library("dygraphs")
 
+test <- cbind(1,2)
 
 #------------------------------Main----------------------------------#
 library("StockCalc")
 Quandl.api_key("aFFTC-nfXbcUNY5xbuVt")
 #user mxlchr, PW krass123
 Starttime <- Sys.time()
-sh_names <- c("AAPL","AES","ADI","CCE","DOW","EW",
-              "F",
+sh_names <- c("AES","ADI","CCE","DOW","EW",
               "FISV",
               "HD",
               "FDX",
@@ -34,9 +34,11 @@ sh_names <- c("AAPL","AES","ADI","CCE","DOW","EW",
               "FITB",
               "MMM",
               "NI",
-              "FTI"
+              "FTI",
+              "F",
+              "AAPL"
 )
-buy <- c(0)
+
 sell <- c(0)
 array_size <- length(sh_names)
 
@@ -45,7 +47,7 @@ for (b in 1:array_size){
  
 ETH  <- Read_Share_DB("WIKI/",sh_names[b],"2017-06-30","2018-01-31")
 cETH <- Calc_Share(ETH)
-cETH<-na.omit(cETH)
+
 
 
 #BB band calculations
@@ -84,15 +86,15 @@ for(i in 1:(array_size-1)){
   else {
     nETC[(i+1),7]<- 0;
   }
-  
+ 
   if ((nETC[(i+1),7]==1) && (nETC[(i+1),6]==1)&& (goto ==0)){ # first test buy in
-    buy[b] <- cETH[(i+1),10];
+    buy<- rbind.xts(buy,cETH[(i+1),10]) ;
     goto = 1;
     #sell[b] <- cETH[(array_size),10];
   }
   else if ((nETC[(i+1),7]==-1) && (nETC[(i+1),6]==1)&& (goto ==1)){ # first test sell
     goto = 1;
-    sell[b] <- cETH[(i+1),10];
+    sell <- rbind.xts(cETH[(i+1),10]);
   }
   #else {sell[b] <-cETH[(array_size),10];}
 }
@@ -102,17 +104,26 @@ for(i in 1:(array_size-1)){
 Stoptime <- Sys.time()
 print(Stoptime-Starttime)
 # Plot
+buy
 plot(sell/buy)
+
+
+plot.xts(cETH[,c(2,4,6,7,10)])
+abline(v=.index(buy[35]), col='blue')
+
+abline(v=as.Date(index(buy[35])),col = 'red')
 par(mfrow=c(3,1))
-plot(cETH[,c(2,4,6,7,10)])
+
+
+plot(as.matrix (cETH[,10]) , type = "l")
+abline(h=11.140,col = 'red')
 plot(nETC[,c(6)])
-plot(nETC[,c(7)])
 plot(nETC[,c(7)])
 plot(cETH[,c(1)])
 #BBand based on the mean_norm value
 
 plot(nETC)
 
-dygraph(cETH[,c(1,3,9)]) %>% 
-  dyRangeSelector()
-
+dygraph(cETH[,c(10)]) %>% 
+ # dyRangeSelector()
+dyAnnotation(index(buy[35]), text = "B", tooltip = "Vietnam")
