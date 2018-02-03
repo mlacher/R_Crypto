@@ -12,7 +12,7 @@ library("Quandl")
 library("TTR")
 library("dygraphs")
 
-test <- cbind(1,2)
+
 
 #------------------------------Main----------------------------------#
 library("StockCalc")
@@ -36,12 +36,20 @@ sh_names <- c("AES","ADI","CCE","DOW","EW",
               "NI",
               "FTI",
               "F",
-              "AAPL"
+              "AAPL",
+              "FB",
+              "AMZN"
 )
 
-sell <- c(0)
+
 array_size <- length(sh_names)
 
+buy <- data.frame(matrix(vector(), 0, 1,
+                       dimnames=list(c(), c("Buy"))),
+                stringsAsFactors=F)
+sell <- data.frame(matrix(vector(), 0, 1,
+                          dimnames=list(c(), c("Sell"))),
+                   stringsAsFactors=F)
 for (b in 1:array_size){
  
  
@@ -62,10 +70,11 @@ for(i in 1:array_size){
     nETC[i,4] <- 0;
   }                    
 }
+
 #1 or 0 if below x days
 goto = 0;
 for(i in 1:(array_size-1)){
-  if(nETC [(i+1),4]>0){                
+  if(nETC [(i+1),4]>0){  #bigger 1.035              
     nETC[(i+1),5]<- as.numeric(nETC [i,5])+as.numeric(nETC [(i+1),4]);
     if (nETC[(i+1),5]>10){ # 15Days value below TH
       nETC[(i+1),6]<- 1;
@@ -86,44 +95,35 @@ for(i in 1:(array_size-1)){
   else {
     nETC[(i+1),7]<- 0;
   }
- 
+  
   if ((nETC[(i+1),7]==1) && (nETC[(i+1),6]==1)&& (goto ==0)){ # first test buy in
-    buy<- rbind.xts(buy,cETH[(i+1),10]) ;
+    buy<- rbind.data.frame(cETH[(i+1),10],buy) ;
     goto = 1;
-    #sell[b] <- cETH[(array_size),10];
+    sell <- rbind.data.frame(cETH[(array_size),10],sell);
   }
-  else if ((nETC[(i+1),7]==-1) && (nETC[(i+1),6]==1)&& (goto ==1)){ # first test sell
-    goto = 1;
-    sell <- rbind.xts(cETH[(i+1),10]);
-  }
-  #else {sell[b] <-cETH[(array_size),10];}
+
+  
 }
 
 
 }
 Stoptime <- Sys.time()
 print(Stoptime-Starttime)
-# Plot
-buy
+
 plot(sell/buy)
 
 
-plot.xts(cETH[,c(2,4,6,7,10)])
-abline(v=.index(buy[35]), col='blue')
-
-abline(v=as.Date(index(buy[35])),col = 'red')
 par(mfrow=c(3,1))
 
 
-plot(as.matrix (cETH[,10]) , type = "l")
-abline(h=11.140,col = 'red')
+plot.xts(cETH[,c(2,4,6,7,10)])
 plot(nETC[,c(6)])
 plot(nETC[,c(7)])
+dygraph(cETH[,c(2,4,6,7,10)]) %>% 
+  # dyRangeSelector()
+  dyAnnotation(rownames(buy)[1], text = "B", tooltip = "Buy")
 plot(cETH[,c(1)])
 #BBand based on the mean_norm value
-
 plot(nETC)
 
-dygraph(cETH[,c(10)]) %>% 
- # dyRangeSelector()
-dyAnnotation(index(buy[35]), text = "B", tooltip = "Vietnam")
+
