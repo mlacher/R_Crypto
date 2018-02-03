@@ -19,29 +19,28 @@ library("StockCalc")
 Quandl.api_key("aFFTC-nfXbcUNY5xbuVt")
 #user mxlchr, PW krass123
 Starttime <- Sys.time()
-sh_names <- c("AES","ADI","CCE","DOW","EW",
-              "FISV",
-              "HD",
-              "FDX",
-              "ICE",
-              "FLS",
-              "IR",
-              "IP",
-              "FMC",
-              "FFIV",
-              "FOXA",
-              "FIS",
-              "FITB",
-              "MMM",
-              "NI",
-              "FTI",
-              "F",
-              "AAPL",
-              "FB",
-              "AMZN"
-)
-
-
+# sh_names <- c("AES","ADI","CCE","DOW","EW",
+#               "FISV",
+#               "HD",
+#               "FDX",
+#               "ICE",
+#               "FLS",
+#               "IR",
+#               "IP",
+#               "FMC",
+#               "FFIV",
+#               "FOXA",
+#               "FIS",
+#               "FITB",
+#               "MMM",
+#               "NI",
+#               "FTI",
+#               "F",
+#               "AAPL",
+#               "FB",
+#               "AMZN"
+# )
+sh_names <- c("AMZN")
 array_size <- length(sh_names)
 
 buy <- data.frame(matrix(vector(), 0, 1,
@@ -63,7 +62,7 @@ nETC<- cbind.xts(cETH[,3]/cETH[,3],cETH[,2]/cETH[,3],cETH[,4]/cETH[,3],0,0,0,0)
 array_size <- length(nETC [,3])
 #1 or 0 if below threshold
 for(i in 1:array_size){
-  if(nETC [i,3]< 1.035){                
+  if(nETC [i,3]< 1.04){                
     nETC[i,4]<- 1;
   }
   else{
@@ -113,16 +112,16 @@ print(Stoptime-Starttime)
 plot(sell/buy)
 
 
-par(mfrow=c(3,1))
-
-
+par(mfrow=c(4,1))
 plot.xts(cETH[,c(2,4,6,7,10)])
 plot(nETC[,c(6)])
 plot(nETC[,c(7)])
+plot(nETC[,c(1:3)])
+
 dygraph(cETH[,c(2,4,6,7,10)]) %>% 
   # dyRangeSelector()
   dyAnnotation(rownames(buy)[1], text = "B", tooltip = "Buy")
-plot(cETH[,c(1)])
+
 #BBand based on the mean_norm value
 plot(nETC)
 
