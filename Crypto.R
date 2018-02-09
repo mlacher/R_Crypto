@@ -43,7 +43,9 @@ Starttime <- Sys.time()
 sh_names <- c("AMZN","MMM",
                              "NI",
                             "FTI",
-                            "F")
+                            "F","ICE",
+                            "FLS","FIS",
+                            "FITB")
 array_size <- length(sh_names)
 
 buy <- data.frame(matrix(vector(), 0, 1,
