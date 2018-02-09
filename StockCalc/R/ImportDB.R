@@ -29,7 +29,7 @@ Read_Share_DB<- function(Share_Type,Share_Name,begDate, endDate){
 }
 
 #----------------------1.2 Calulate Stuff----------------------------#
-Calc_Share <- function (Share_DB){
+Calc_Share_DB <- function (Share_DB){
 
   #-----------------------1.2.1 MACD / EMA-----------------------------#
   # MACD
@@ -63,10 +63,5 @@ Calc_Share <- function (Share_DB){
   return (cShare_DB)
 }
 
-#--------------------1.3 BuySignal-------------------------------------#
-# Algorithm to calculate WinSuccess
-#Normaliser BB Band
-#Alg_DB<- cbind.xts(cShare_DB[,3]/cShare_DB[,3],cShare_DB[,2]/cShare_DB[,3],cShare_DB[,4]/cShare_DB[,3])
 
-#----------------1.4 tbd-----------------------------------------------#
 

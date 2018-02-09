@@ -40,7 +40,10 @@ Starttime <- Sys.time()
 #               "FB",
 #               "AMZN"
 # )
-sh_names <- c("AMZN")
+sh_names <- c("AMZN","MMM",
+                             "NI",
+                            "FTI",
+                            "F")
 array_size <- length(sh_names)
 
 buy <- data.frame(matrix(vector(), 0, 1,
@@ -52,17 +55,17 @@ sell <- data.frame(matrix(vector(), 0, 1,
 for (b in 1:array_size){
 
 
-ETH  <- Read_Share_DB("WIKI/",sh_names[1],"2017-06-30","2018-01-31")
-cETH <- Calc_Share(ETH)
+ETH  <- Read_Share_DB("WIKI/",sh_names[b],"2017-06-30","2018-01-31")
+cETH <- Calc_Share_DB(ETH)
 nETC<-Eval_Share(cETH )
 
-
+array_size <- length(nETC[,3])
 #1 or 0 if below x days
 goto = 0;
 for(i in 1:(array_size-1)){
   if(nETC [(i+1),4]>0){  #bigger 1.035
     nETC[(i+1),5]<- as.numeric(nETC [i,5])+as.numeric(nETC [(i+1),4]);
-    if (nETC[(i+1),5]>10){ # 15Days value below TH
+    if (nETC[(i+1),5]>15){ # 15Days value below TH
       nETC[(i+1),6]<- 1;
       #nETC[(i+1),5]<-0; # RESET
     } # First Buy Sign @ 15D
@@ -83,7 +86,7 @@ for(i in 1:(array_size-1)){
   }
 
   if ((nETC[(i+1),7]==1) && (nETC[(i+1),6]==1)&& (goto ==0)){ # first test buy in
-    buy<- rbind.data.frame(cETH[(i+1),10],buy) ;
+    buy<- rbind.data.frame(cETH[(i+7),10],buy) ; # +7, often price drop after crossing UpperBB
     goto = 1;
     sell <- rbind.data.frame(cETH[(array_size),10],sell);
   }
