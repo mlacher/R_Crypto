@@ -101,18 +101,21 @@ for(i in 1:(array_size-1)){
 Stoptime <- Sys.time()
 print(Stoptime-Starttime)
 
+
+
 plot(sell/buy)
 
 
-par(mfrow=c(4,1))
+layout(mat=matrix(c(1,2,3,4),nrow=4,ncol=1,byrow=T))
 plot.xts(cETH[,c(2,4,6,7,10)])
 plot(nETC[,c(6)])
 plot(nETC[,c(7)])
-plot(nETC[,c(1:3)])
+#plot(nETC[,c(1:3)])
 
 dygraph(cETH[,c(2,4,6,7,10)]) %>%
   # dyRangeSelector()
-  dyAnnotation(rownames(buy)[1], text = "B", tooltip = "Buy")
+  dyAnnotation(rownames(buy)[1], text = "B", tooltip = "Buy")%>%
+  dyAnnotation(rownames(sell)[1], text = "S", tooltip = "Sell")
 
 #BBand based on the mean_norm value
 plot(nETC)
