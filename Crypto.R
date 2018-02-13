@@ -50,74 +50,38 @@ sh_names <- c("AES","ADI","DOW","EW",
               "NSTG",
               "NNVC",
               "NATH"
-             
-              
+
+
 )
 
-array_size <- length(sh_names)
-#array_size <-3 # debug function
+#array_size <- length(sh_names)
+array_size <-3 # debug function
+
 buy <- data.frame(matrix(vector(), 0, 2,
-                       dimnames=list(c(), c("Buy","Name"))),
-                stringsAsFactors=F)
-sell <- data.frame(matrix(vector(), 0, 1,
-                          dimnames=list(c(), c("Sell"))),
-                   stringsAsFactors=F)
+                         dimnames=list(c(), c("Buy","Name"))),
+                  stringsAsFactors=F)
+
 
 allShare <- xts(x="", order.by=Sys.Date())
 
 for (b in 1:array_size){
 
 ETH  <- Read_Share_DB("WIKI/",sh_names[b],"2017-06-30","2018-01-31")
-
 allShare<- cbind(allShare,ETH[,3])
 cETH <- Calc_Share_DB(ETH)
-nETH<-Eval_Share(cETH )
+buy<-Eval_Share(cETH,buy )
 
-array_size <- length(nETH[,3])
-#1 or 0 if below x days
-goto = 0;
-for(i in 1:(array_size-1)){
-  if(nETH [(i+1),4]>0){  #bigger 1.035
-    nETH[(i+1),5]<- as.numeric(nETH [i,5])+as.numeric(nETH [(i+1),4]);
-    if (nETH[(i+1),5]>15){ # 15Days value below TH
-      nETH[(i+1),6]<- 1;
-      #nETH[(i+1),5]<-0; # RESET
-    } # First Buy Sign @ 15D
-    else {nETH[(i+1),6]<- 0;}
 
-  }
-  else{
-    nETH[(i+1),5] <- 0;
-  }
-  if (cETH[(i+1),10]>cETH[(i+1),4]){ #Value hits UpperBB (buy signal)
-    nETH[(i+1),7]<- 1;
-  }
-  else if (cETH[(i+1),10]<cETH[(i+1),2]){ #Value hits LowerBB (sell signal)
-    nETH[(i+1),7]<- -1;
-  }
-  else {
-    nETH[(i+1),7]<- 0;
-  }
-
-  if ((nETH[(i+1),7]==1) && (nETH[(i+1),6]==1)&& (goto ==0)){ # first test buy in
-    buy<- rbind.data.frame(cETH[(i+5),10],buy) ; # +5, often price drop after crossing UpperBB
-    goto = 1;
-    sell <- rbind.data.frame(cETH[(array_size),10],sell);
-  }
-}
-
-if (goto == 0){
-  sell <- rbind.data.frame(cETH[(array_size),10],sell)
-  buy <- rbind.data.frame(cETH[(array_size),10],buy)
-  }
 
 }
-Stoptime <- Sys.time()
-print(Stoptime-Starttime)
-
 #delte first dummy value
 allShare <- allShare[,-1]
 colnames(allShare)<- sh_names
+
+Stoptime <- Sys.time()
+print(Stoptime-Starttime)
+
+
 
 
 plot(sell/buy)
