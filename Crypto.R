@@ -19,6 +19,7 @@ library("StockCalc")
 Quandl.api_key("aFFTC-nfXbcUNY5xbuVt")
 #user mxlchr, PW krass123
 Starttime <- Sys.time()
+<<<<<<< HEAD
 sh_names <- c("AES","ADI","DOW","EW",
               "FISV",
               "HD",
@@ -63,6 +64,42 @@ buy <- data.frame(matrix(vector(), 0, 2,
 
 
 allShare <- xts(x="", order.by=Sys.Date())
+=======
+# sh_names <- c("AES","ADI","CCE","DOW","EW",
+#               "FISV",
+#               "HD",
+#               "FDX",
+#               "ICE",
+#               "FLS",
+#               "IR",
+#               "IP",
+#               "FMC",
+#               "FFIV",
+#               "FOXA",
+#               "FIS",
+#               "FITB",
+#               "MMM",
+#               "NI",
+#               "FTI",
+#               "F",
+#               "AAPL",
+#               "FB",
+#               "AMZN"
+# )
+sh_names <- c("AMZN","MMM",
+                             "NI",
+                            "FTI",
+                            "F")
+array_size <- length(sh_names)
+
+buy <- data.frame(matrix(vector(), 0, 1,
+                       dimnames=list(c(), c("Buy"))),
+                stringsAsFactors=F)
+sell <- data.frame(matrix(vector(), 0, 1,
+                          dimnames=list(c(), c("Sell"))),
+                   stringsAsFactors=F)
+for (b in 1:array_size){
+>>>>>>> parent of 83bb3ce... minor cleaning
 
 for (b in 1:array_size){
 
