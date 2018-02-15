@@ -75,8 +75,8 @@ buy<-Eval_Share(cETH,buy )
 
 }
 #delte first dummy value
-allShare <- allShare[,-1]
-colnames(allShare)<- sh_names
+# allShare <- allShare[,-1]
+# colnames(allShare)<- sh_names
 
 Stoptime <- Sys.time()
 print(Stoptime-Starttime)
