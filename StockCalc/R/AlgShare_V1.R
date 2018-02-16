@@ -1,6 +1,6 @@
 
 #Boilinger Band evaluation
-Eval_Share <- function (cShare_DB,cbuy){
+Eval_Share <- function (cShare_DB,normbb,cbuy){
 
   sell <- data.frame(matrix(vector(), 0, 1,
                             dimnames=list(c(), c("Sell"))),
@@ -15,7 +15,7 @@ cCalc_Share_DB<- cbind.xts(cShare_DB[,3]/cShare_DB[,3],
 array_size <- length(cCalc_Share_DB[,3]) #doubled could be handed to funtion
 #1 or 0 if below threshold
 for(i in 1:array_size){
-  if(cCalc_Share_DB [i,3]< 1.035){
+  if(cCalc_Share_DB [i,3]< normbb){
     cCalc_Share_DB[i,4]<- 1;
   }
   else{
@@ -52,6 +52,8 @@ for(i in 1:(array_size-1)){
 
   if ((cCalc_Share_DB[(i+1),7]==1) && (cCalc_Share_DB[(i+1),6]==1)&& (goto ==0)){ # first test cbuy in
     cbuy<- rbind.data.frame(cShare_DB[(i+5),10],cbuy) ; # +5, often price drop after crossing UpperBB
+   # cbuy<- cbind.data.frame(index(cShare_DB)[i+5)],cShare_DB[(i+5),10],cETH[1,10])
+   # under construction
     goto = 1;
     sell <- rbind.data.frame(cShare_DB[(array_size),10],sell);
   }
