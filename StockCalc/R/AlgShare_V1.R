@@ -1,10 +1,10 @@
 
 #Boilinger Band evaluation
-Eval_Share <- function (cShare_DB,normbb,cbuy){
+Eval_Share <- function (cShare_DB,normbb,rbuy){
 
-  sell <- data.frame(matrix(vector(), 0, 1,
-                            dimnames=list(c(), c("Sell"))),
-                     stringsAsFactors=F)
+  cbuy <- data.frame(matrix(vector(), 0, 4,
+                           dimnames=list(c(), c("BDate","Buy","SDate","Sell"))),
+                    stringsAsFactors=T)
 
 
 #Normalise BBand to mean value
@@ -51,12 +51,13 @@ for(i in 1:(array_size-1)){
   }
 
   if ((cCalc_Share_DB[(i+1),7]==1) && (cCalc_Share_DB[(i+1),6]==1)&& (goto ==0)){ # first test cbuy in
-    cbuy<- rbind.data.frame(cShare_DB[(i+5),10],cbuy) ; # +5, often price drop after crossing UpperBB
-   # cbuy<- cbind.data.frame(index(cShare_DB)[i+5)],cShare_DB[(i+5),10],cETH[1,10])
+    cbuy<- cbind.data.frame(index(cShare_DB)[i+5],cShare_DB[(i+5),10],
+                            index(cShare_DB[(array_size)]),cShare_DB[(array_size),10])
+    rbuy<- rbind.data.frame(cbuy,rbuy) ; # +5, often price drop after crossing UpperBB
+
    # under construction
     goto = 1;
-    sell <- rbind.data.frame(cShare_DB[(array_size),10],sell);
   }
 }
-return(cbuy)
+return(rbuy)
 }

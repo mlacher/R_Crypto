@@ -70,7 +70,6 @@ ETH  <- Read_Share_DB("WIKI/",sh_names[b],"2017-06-30","2018-01-31")
 allShare<- cbind(allShare,ETH[,3])
 cETH <- Calc_Share_DB(ETH)
 buy<-Eval_Share(cETH,1.035,buy )
-#buy<- cbind.data.frame(index(cETH)[1],cETH[1,10],cETH[1,10]) to be tested
 
 
 }
@@ -83,8 +82,39 @@ print(Stoptime-Starttime)
 
 
 
+##BBand variation
+BBTH_1.04<- coredata(as.xts(buy[4]/buy[2]))
+BBTH_1.025<- test[,1]
+#names(test1) <- "1.025"
+#test1 <- coredata(as.xts(test1))
 
-plot(sell/buy)
+
+
+
+# create value labels
+
+
+
+plot(density(BBTH_1.02), col = "red",xlim = c(0.9,1.2),
+     main = "BBTH from 1.02 - 1.04, ds: 0.05, r/blu/g/o/blk")
+abline (v = mean(BBTH_1.02), col = "red")
+lines(density(BBTH_1.025), col = "blue")
+abline (v = mean(BBTH_1.025), col = "blue")
+lines(density(BBTH_1.03), col = "green")
+abline (v = mean(BBTH_1.03), col = "green")
+lines(density(BBTH_1.035), col = "orange")
+abline (v = mean(BBTH_1.035), col = "orange")
+lines(density(BBTH_1.04), col = "black")
+abline (v = mean(BBTH_1.04), col = "black")
+
+
+
+lines (c(mean(BBTH_1.02),
+        mean(BBTH_1.025),
+        mean(BBTH_1.03),
+        mean(BBTH_1.035)
+        ,mean(BBTH_1.04)), xaxt = "n", xlab = "BBTH", ylab = "% win")
+axis (1, at=1:5,labels= c(1.02,1.025,1.03,1.035,1.04))
 
 
 layout(mat=matrix(c(1,2,3,4),nrow=4,ncol=1,byrow=T))
