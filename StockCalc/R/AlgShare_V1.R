@@ -50,12 +50,13 @@ for(i in 1:(array_size-1)){
     cCalc_Share_DB[(i+1),7]<- 0;
   }
 
-  if ((cCalc_Share_DB[(i+1),7]==1) && (cCalc_Share_DB[(i+1),6]==1)&& (goto ==0)){ # first test cbuy in
+  if ((cCalc_Share_DB[(i+1),7]==1) && 
+      (cCalc_Share_DB[(i+1),6]==1) && 
+      (goto ==0) &&
+      (i< (array_size-7))){ # first test cbuy in
     cbuy<- cbind.data.frame(index(cShare_DB)[i+5],cShare_DB[(i+5),10],
                             index(cShare_DB[(array_size)]),cShare_DB[(array_size),10])
     rbuy<- rbind.data.frame(cbuy,rbuy) ; # +5, often price drop after crossing UpperBB
-
-   # under construction
     goto = 1;
   }
 }

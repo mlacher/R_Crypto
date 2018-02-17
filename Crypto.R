@@ -104,7 +104,7 @@ lines(density(BBTH_1.03), col = "green")
 abline (v = mean(BBTH_1.03), col = "green")
 lines(density(BBTH_1.035), col = "orange")
 abline (v = mean(BBTH_1.035), col = "orange")
-lines(density(BBTH_1.04), col = "black")
+plot(density(BBTH_1.04), col = "black",xlim = c(0.9,1.2))
 abline (v = mean(BBTH_1.04), col = "black")
 
 
