@@ -57,8 +57,8 @@ sh_names <- c("AES","ADI","DOW","EW",
 array_size <- length(sh_names)
 #array_size <-3 # debug function
 
-buy <- data.frame(matrix(vector(), 0, 4,
-                         dimnames=list(c(), c("BDate","Buy","SDate","Sell"))),
+buy <- data.frame(matrix(vector(), 0, 5,
+                         dimnames=list(c(), c("name","BDate","Buy","SDate","Sell"))),
                   stringsAsFactors=T)
 
 
@@ -69,7 +69,7 @@ for (b in 1:array_size){
 ETH  <- Read_Share_DB("WIKI/",sh_names[b],"2017-06-30","2018-01-31")
 allShare<- cbind(allShare,ETH[,3])
 cETH <- Calc_Share_DB(ETH)
-buy<-Eval_Share(cETH,1.035,buy )
+buy<-Eval_Share(cETH,sh_names[b],1.035,buy )
 
 
 }
